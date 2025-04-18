@@ -2,7 +2,8 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # ========== Constants ==========
-$saveDir = "save_data"
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$saveDir = Join-Path $scriptDir "save_data"
 if (!(Test-Path $saveDir)) {
     New-Item -ItemType Directory -Path $saveDir | Out-Null
 }
@@ -15,7 +16,7 @@ $font = New-Object System.Drawing.Font("Segoe UI", 10)
 
 # ========== Form ==========
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Alias & Partial Manager"
+$form.Text = "PowerShell Aliases & Partials Manager"
 $form.Size = New-Object System.Drawing.Size(600, 830)
 $form.StartPosition = "CenterScreen"
 $form.Font = $font

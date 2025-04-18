@@ -1,13 +1,14 @@
 param (
-    [Parameter(Mandatory = $true, ValueFromRemainingArguments = $true)]
+    [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]
     [string[]]$args
 )
 
-# Constants
-$aliasFile = "save_data/aliases.txt"
-$partialFile = "save_data/partials.txt"
+# Determine the directory of the script
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$aliasFile = Join-Path $scriptDir "save_data/aliases.txt"
+$partialFile = Join-Path $scriptDir "save_data/partials.txt"
 
-# Load alias and partial dictionaries
+# Load Alias and Partials dictionaries
 $aliases = @{}
 $partials = @{}
 
@@ -29,10 +30,11 @@ if (Test-Path $partialFile) {
     }
 }
 
-# Return early if there's nothing to process
+# Print usage if there's nothing to process
 if ($args.Count -eq 0) {
     Write-Host "Usage: papm <command or alias> [partials or args]..."
-    exit 1
+    Write-Host "Run papm_ui to open the GUI."
+    exit 0
 }
 
 # Build the command
