@@ -64,5 +64,8 @@ for ($i = 1; $i -lt $args.Count; $i++) {
 $commandString = $expandedCommand -join ' '
 
 # Output and run the command
-Write-Host "[PAPM] Running: $commandString"
+Write-Host "[" -NoNewline
+Write-Host -ForegroundColor Green "papm" -NoNewline
+Write-Host "] " -NoNewline
+Write-Host "Running: $commandString`n"
 Invoke-Expression $commandString

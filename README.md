@@ -27,6 +27,8 @@
    - Edit the `PATH` variable
    - Add `C:\User\tools\PowerShell-Aliases-Partials-Manager`
 
+    ![How to Add to PATH](images/path-example.png)
+
 ## 🛠 How to Use
 
 ### 1. Configuring Aliases and Partials with `papm_ui`
@@ -106,6 +108,22 @@ PowerShell-Aliases-Partials-Manager/
 - You can use **multiple partials** in the same command.
 - Combine an **alias + partials** to quickly generate full commands with arguments.
 - Useful for long flags, frequent git/kubectl/docker commands, etc.
+
+## 🔧 Customizing the Command Name
+
+If you find `papm` too long to type, you can rename the `papm.ps1` file to a shorter name, such as `p.ps1`. As long as the file is in a directory included in your system's `PATH` environment variable, you can call it using the new name.
+
+### Example:
+
+1. Rename `papm.ps1` to `p.ps1`.
+2. Call it using:
+
+   ```powershell
+   p gp om
+   # Runs: git pull origin master
+   ```
+
+This allows you to use a shorter and more convenient command name while keeping all functionality intact.
 
 ## 📣 Contribute
 
