@@ -1,0 +1,66 @@
+param (
+    [Parameter(Mandatory = $true, ValueFromRemainingArguments = $true)]
+    [string[]]$args
+)
+
+# Constants
+$aliasFile = "save_data/aliases.txt"
+$partialFile = "save_data/partials.txt"
+
+# Load alias and partial dictionaries
+$aliases = @{}
+$partials = @{}
+
+if (Test-Path $aliasFile) {
+    $lines = Get-Content $aliasFile
+    for ($i = 0; $i -lt $lines.Count; $i += 2) {
+        if ($i + 1 -lt $lines.Count) {
+            $aliases[$lines[$i]] = $lines[$i + 1]
+        }
+    }
+}
+
+if (Test-Path $partialFile) {
+    $lines = Get-Content $partialFile
+    for ($i = 0; $i -lt $lines.Count; $i += 2) {
+        if ($i + 1 -lt $lines.Count) {
+            $partials[$lines[$i]] = $lines[$i + 1]
+        }
+    }
+}
+
+# Return early if there's nothing to process
+if ($args.Count -eq 0) {
+    Write-Host "Usage: papm <command or alias> [partials or args]..."
+    exit 1
+}
+
+# Build the command
+$expandedCommand = @()
+
+# First item might be an alias
+$first = $args[0]
+if ($aliases.ContainsKey($first)) {
+    $expandedCommand += $aliases[$first]
+}
+else {
+    $expandedCommand += $first
+}
+
+# Rest might be partials or not
+for ($i = 1; $i -lt $args.Count; $i++) {
+    $word = $args[$i]
+    if ($partials.ContainsKey($word)) {
+        $expandedCommand += $partials[$word]
+    }
+    else {
+        $expandedCommand += $word
+    }
+}
+
+# Join the command into a string
+$commandString = $expandedCommand -join ' '
+
+# Output and run the command
+Write-Host "[PAPM] Running: $commandString"
+Invoke-Expression $commandString
