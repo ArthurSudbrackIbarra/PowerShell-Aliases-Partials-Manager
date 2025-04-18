@@ -17,8 +17,8 @@ $font = New-Object System.Drawing.Font("Segoe UI", 10)
 
 # ========== Form ==========
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "PowerShell Aliases & Partials Manager"
-$form.Size = New-Object System.Drawing.Size(600, 840)
+$form.Text = "PowerShell Aliases & Partials Manager [papm] UI"
+$form.Size = New-Object System.Drawing.Size(595, 845)
 $form.StartPosition = "CenterScreen"
 $form.Font = $font
 $form.FormBorderStyle = "FixedDialog"
@@ -47,6 +47,8 @@ $buttonAddAlias = New-Object System.Windows.Forms.Button
 $buttonAddAlias.Text = "Add Alias"
 $buttonAddAlias.Location = New-Object System.Drawing.Point(460, 16)
 $buttonAddAlias.Size = New-Object System.Drawing.Size(100, 30)
+$buttonAddAlias.BackColor = [System.Drawing.Color]::FromArgb(230, 230, 230)
+$buttonAddAlias.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
 $form.Controls.Add($buttonAddAlias)
 
 # ========== Partial Inputs ==========
@@ -72,6 +74,8 @@ $buttonAddPartial = New-Object System.Windows.Forms.Button
 $buttonAddPartial.Text = "Add Partial"
 $buttonAddPartial.Location = New-Object System.Drawing.Point(460, 56)
 $buttonAddPartial.Size = New-Object System.Drawing.Size(100, 30)
+$buttonAddPartial.BackColor = [System.Drawing.Color]::FromArgb(230, 230, 230)
+$buttonAddPartial.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
 $form.Controls.Add($buttonAddPartial)
 
 # ========== Alias List ==========
@@ -113,7 +117,7 @@ $listPartials.ContextMenu = $contextMenuPartial
 # ========== Description ==========
 $descriptionLabel = New-Object System.Windows.Forms.Label
 $descriptionLabel.Location = New-Object System.Drawing.Point(20, 450)
-$descriptionLabel.Size = New-Object System.Drawing.Size(540, 330)
+$descriptionLabel.Size = New-Object System.Drawing.Size(540, 335)
 $descriptionLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9)
 $descriptionLabel.Text = @"
 This application lets you manage your PowerShell aliases and partials.
@@ -139,7 +143,11 @@ To delete one:
 "@
 $descriptionLabel.AutoSize = $false
 $descriptionLabel.TextAlign = [System.Drawing.ContentAlignment]::TopLeft
-$descriptionLabel.BackColor = [System.Drawing.Color]::FromArgb(200, 200, 200)
+$descriptionLabel.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
+$descriptionLabel.Padding = New-Object System.Windows.Forms.Padding(5)
+$descriptionLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Italic)
+$descriptionLabel.ForeColor = [System.Drawing.Color]::FromArgb(50, 50, 50)
+$descriptionLabel.BackColor = [System.Drawing.Color]::FromArgb(230, 230, 230)
 
 $form.Controls.Add($descriptionLabel)
 
