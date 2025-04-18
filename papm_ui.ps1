@@ -1,13 +1,14 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# ========== Constants ==========
+# Determine the Directory of the Script
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# ========== Constants ==========
 $saveDir = Join-Path $scriptDir "save_data"
 if (!(Test-Path $saveDir)) {
     New-Item -ItemType Directory -Path $saveDir | Out-Null
 }
-
 $aliasFile = Join-Path $saveDir "aliases.txt"
 $partialFile = Join-Path $saveDir "partials.txt"
 
@@ -17,9 +18,11 @@ $font = New-Object System.Drawing.Font("Segoe UI", 10)
 # ========== Form ==========
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "PowerShell Aliases & Partials Manager"
-$form.Size = New-Object System.Drawing.Size(600, 830)
+$form.Size = New-Object System.Drawing.Size(600, 840)
 $form.StartPosition = "CenterScreen"
 $form.Font = $font
+$form.FormBorderStyle = "FixedDialog"
+$form.MaximizeBox = $false
 
 # ========== Alias Inputs ==========
 $labelAlias = New-Object System.Windows.Forms.Label
@@ -110,7 +113,7 @@ $listPartials.ContextMenu = $contextMenuPartial
 # ========== Description ==========
 $descriptionLabel = New-Object System.Windows.Forms.Label
 $descriptionLabel.Location = New-Object System.Drawing.Point(20, 450)
-$descriptionLabel.Size = New-Object System.Drawing.Size(560, 350)
+$descriptionLabel.Size = New-Object System.Drawing.Size(540, 330)
 $descriptionLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9)
 $descriptionLabel.Text = @"
 This application lets you manage your PowerShell aliases and partials.
@@ -136,13 +139,15 @@ To delete one:
 "@
 $descriptionLabel.AutoSize = $false
 $descriptionLabel.TextAlign = [System.Drawing.ContentAlignment]::TopLeft
+$descriptionLabel.BackColor = [System.Drawing.Color]::FromArgb(200, 200, 200)
+
 $form.Controls.Add($descriptionLabel)
 
 # ========== Storage ==========
 $aliases = @{}
 $partials = @{}
 
-function Load-Data {
+function Import-Data {
     if (Test-Path $aliasFile) {
         $lines = Get-Content $aliasFile
         for ($i = 0; $i -lt $lines.Count; $i += 2) {
@@ -161,7 +166,7 @@ function Load-Data {
         }
     }
 
-    Refresh-List
+    Update-List
 }
 
 function Save-Data {
@@ -180,7 +185,7 @@ function Save-Data {
     }
 }
 
-function Refresh-List {
+function Update-List {
     $listAliases.Items.Clear()
     foreach ($alias in $aliases.Keys) {
         $listAliases.Items.Add("$alias / $($aliases[$alias])")
@@ -199,7 +204,7 @@ $buttonAddAlias.Add_Click({
 
         if ($key -and $value) {
             $aliases[$key] = $value
-            Refresh-List
+            Update-List
             Save-Data
             $textAliasKey.Clear()
             $textAliasValue.Clear()
@@ -212,7 +217,7 @@ $buttonAddPartial.Add_Click({
 
         if ($key -and $value) {
             $partials[$key] = $value
-            Refresh-List
+            Update-List
             Save-Data
             $textPartialKey.Clear()
             $textPartialValue.Clear()
@@ -225,7 +230,7 @@ $menuItemDeleteAlias.Add_Click({
             $key = $entry -split ' / ', 2 | Select-Object -First 1
             if ($aliases.ContainsKey($key)) {
                 $aliases.Remove($key)
-                Refresh-List
+                Update-List
                 Save-Data
             }
         }
@@ -237,7 +242,7 @@ $menuItemDeletePartial.Add_Click({
             $key = $entry -split ' / ', 2 | Select-Object -First 1
             if ($partials.ContainsKey($key)) {
                 $partials.Remove($key)
-                Refresh-List
+                Update-List
                 Save-Data
             }
         }
@@ -245,7 +250,7 @@ $menuItemDeletePartial.Add_Click({
 
 # ========== Show Form ==========
 $form.Add_Shown({ 
-        Load-Data
+        Import-Data
         $form.Activate()
     })
 

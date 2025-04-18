@@ -93,7 +93,7 @@ The command being executed is shown in the terminal before it runs.
 ## 📁 File Structure
 
 ```
-papm/
+PowerShell-Aliases-Partials-Manager/
 ├── papm.ps1             # Main CLI runner
 ├── papm_ui.ps1          # GUI for configuring aliases/partials
 ├── save_data/
@@ -114,4 +114,5 @@ Feel free to submit pull requests or open issues for features or improvements!
 ## 📜 License
 
 MIT License
+
 Happy automating! 🚀
